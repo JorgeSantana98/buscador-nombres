@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="
+        https://cdn.jsdelivr.net/npm/sweetalert2@11.26.22/dist/sweetalert2.min.css
+        " rel="stylesheet">
+    <title>Corre Con Nombres</title>
+</head>
+
+<body>
+    <input type="text" id="nombres" placeholder="Cedula">
+    <button id="btn" onclick="obtenerDatos()">BUSCAR NOMBRE</button>
+    <p id="result">Aqui se genera el nombre completo!</p>
+    <button id="btn2" onclick="generarCorreo()">GENERAR CORREO</button>
+    <p id="correo">Aqui se genera el correo!</p>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function generarCorreo() {
+        var nombres = document.getElementById("result").innerText;
+        console.log(nombres);
+        var partes = nombres.split(" ");
+        var primerapellido = partes[0];
+        var primernombre = partes[2];
+
+        // if (partes.length > 2) {
+        //     // Si asumes que es Nombre + Apellido + Apellido
+        //     primerApellido = partes[1];
+        // }
+        document.getElementById("correo").innerText = primernombre + primerapellido + "@GMAIL.COM";
+
+        // Obtener el texto
+        var texto = document.getElementById("correo").innerText;
+
+        // Usar la API Clipboard para copiar
+        navigator.clipboard.writeText(texto).then(() => {
+            // alert("Texto copiado: " + texto);
+            Swal.fire({
+                title: 'Correo copiado',
+                text: texto,
+                theme: 'auto',
+                icon: "success"
+            });
+        });
+    }
+
+    const obtenerDatos = async () => {
+        try {
+            const identificacion = document.getElementById("nombres").value;
+            const respuesta = await fetch(`https://srienlinea.sri.gob.ec/movil-servicios/api/v1.0/deudas/porIdentificacion/${identificacion}/?tipoPersona=N&_=1745252583095`);
+            const datos = await respuesta.json();
+            const nombre = datos.contribuyente.nombreComercial;
+            document.getElementById("result").innerText = nombre;
+            navigator.clipboard.writeText(nombre).then(() => {
+                Swal.fire({
+                    title: 'Nombre copiado',
+                    text: nombre,
+                    theme: 'dark',
+                    icon: "success"
+                });
+            });
+            console.log(datos);
+
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+                footer: '<a href="#">Why do I have this issue?</a>'
+            });
+            console.error('Error:', error);
+        }
+    }
+
+</script>
+
+</html>
