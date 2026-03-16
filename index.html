@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <input type="text" id="cedula" placeholder="Cedula" oninput="this.value = this.value.replace(/\s/g, '')" onkeydown="if(event.key === 'Enter') obtenerDatos()">
+    <input type="text" id="cedula" placeholder="Cedula" oninput="this.value = this.value.replace(/\s/g, '')" onkeydown="if(event.key === 'Enter') obtenerDatos()" maxlength="10">
     <button id="btn" onclick="obtenerDatos()">BUSCAR NOMBRE</button>
     <p id="result">Aqui se genera el nombre completo!</p>
     <button id="btn2" onclick="generarCorreo()">GENERAR CORREO</button>
