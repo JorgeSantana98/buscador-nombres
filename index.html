@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <input type="text" id="nombres" placeholder="Cedula">
+    <input type="text" id="cedula" placeholder="Cedula" oninput="this.value = this.value.replace(/\s/g, '')" onkeydown="if(event.key === 'Enter') obtenerDatos()">
     <button id="btn" onclick="obtenerDatos()">BUSCAR NOMBRE</button>
     <p id="result">Aqui se genera el nombre completo!</p>
     <button id="btn2" onclick="generarCorreo()">GENERAR CORREO</button>
@@ -50,7 +50,7 @@
 
     const obtenerDatos = async () => {
         try {
-            const identificacion = document.getElementById("nombres").value;
+            const identificacion = document.getElementById("cedula").value.replace(/\s/g, '');
             const respuesta = await fetch(`https://srienlinea.sri.gob.ec/movil-servicios/api/v1.0/deudas/porIdentificacion/${identificacion}/?tipoPersona=N&_=1745252583095`);
             const datos = await respuesta.json();
             const nombre = datos.contribuyente.nombreComercial;
